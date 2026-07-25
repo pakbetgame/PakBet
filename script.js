@@ -23,7 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function isStrongPassword(value) {
-    return value.length >= 8 && /[a-zA-Z]/.test(value) && /[0-9]/.test(value);
+
+    return value.length >= 8;
+
   }
 
   function showScreen(screen) {
