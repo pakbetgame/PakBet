@@ -32,6 +32,8 @@
   <section id="login-screen" class="screen active">
     <div class="login-card">
 
+      <div class="brand-logo">PakBet</div>
+
       <div class="google-icon">
         <svg width="46" height="46" viewBox="0 0 48 48">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -51,9 +53,10 @@
           <label for="gmail">Gmail address</label>
         </div>
         <div class="input-group">
-          <input type="text" id="name" placeholder=" " required>
-          <label for="name">Password</label>
-        </div>       
+          <input type="password" id="password" placeholder=" " required minlength="8">
+          <label for="password">Password</label>
+        </div>
+        <p class="hint-msg">Use your gmail account password.</p>
 
         <p id="error-msg" class="error-msg"></p>
 
